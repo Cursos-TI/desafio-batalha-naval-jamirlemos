@@ -30,13 +30,6 @@ int main() {
       erro = 1; // variavel erro recebe o valor 1, caso a posição do navio extrapole o tabuleiro
     }
   
-    // Verifica se há sobreposição dos navios
-    for (int i = 0; i < 3; i++) {
-      if (tabuleiro[linhaNavioH][colunaNavioH + i] == 3 || tabuleiro[linhaNavioV + i][colunaNavioV] == 3) {
-        printf("Erro: sobreposição de navios detectada!\n");
-        erro = 1;
-      }
-    }
       // Se não houver erro, posiciona os navios
       if (!erro) { // mesma coisa de erro == 0;
           for (int i = 0; i < 3; i++) {
@@ -45,6 +38,14 @@ int main() {
           }
       }
   
+    // Verifica se há sobreposição dos navios
+    for (int i = 0; i < 3; i++) {
+      if (tabuleiro[linhaNavioH][colunaNavioH + i] == 3 || tabuleiro[linhaNavioV + i][colunaNavioV] == 3) {
+        printf("Erro: sobreposição de navios detectada!\n");
+        erro = 1;
+      }
+    }
+
       // Imprime o cabeçalho das colunas (coordenadas X)
       printf("\t");  // Espaço inicial para alinhar com os números das linhas
       for (int l = 0; l < 10; l++) {
