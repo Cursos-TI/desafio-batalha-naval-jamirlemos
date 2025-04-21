@@ -19,15 +19,15 @@ int main() {
     int linhaNavioV = 5, colunaNavioV = 7;  // Navio vertical começa em H6
   
     // Validação do navio horizontal (3 posições dentro do tabuleiro com 10 posições)
-    if (colunaNavioH + 3 > 10) {
+    if (colunaNavioH + 2 > 10) {
       printf("Erro: navio horizontal fora dos limites do tabuleiro!\n");
-      erro = 1;
+      erro = 1; // variavel erro recebe o valor 1, caso a posição do navio extrapole o tabuleiro
     }
   
     // Validação do navio vertical (3 posições dentro do tabuleiro com 10 posições)
-    if (linhaNavioV + 3 > 10) {
+    if (linhaNavioV + 2 > 10) {
       printf("Erro: navio vertical fora dos limites do tabuleiro!\n");
-      erro = 1;
+      erro = 1; // variavel erro recebe o valor 1, caso a posição do navio extrapole o tabuleiro
     }
   
     // Verifica se há sobreposição dos navios
