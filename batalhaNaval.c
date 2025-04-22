@@ -115,69 +115,41 @@ int main() {
 
   if (erro) return 0;  // Se houver erro de limites ou sobreposição, encerra o programa.
 
-  // Preenche a matriz cone com base no centro expandindo em forma de cone.
+  // Preenche a matriz cone expandindo em forma de cone e aplica diretamente o padrão cone no tabuleiro.
   for (int i = 0; i < linhaHabilidade; i++) {
     for (int j = 0; j < colunaHabilidade; j++) {
-      if (j >= 2 - i && j <= 2 + i) {  // Se a posição estiver dentro do alcance lateral do cone.
-        cone[i][j] = 1;                // Marca como área atingida pela habilidade.
+      if (j >= 2 - i && j <= 2 + i) {               // Verifica se a posição pertence ao formato de cone
+        int linhaAfetada = Linha_cone + i;          // Deslocamento vertical
+        int colunaAfetada = Coluna_cone + (j - 2);  // Deslocamento horizontal
+
+        tabuleiro[linhaAfetada][colunaAfetada] = 1;  // Marca a célula no tabuleiro
       }
     }
   }
 
-  // Aplica a habilidade cone no tabuleiro com base na origem.
+  // Preenche a matriz cruz para formar o padrão da cruz e aplica diretamente o padrão da cruz no tabuleiro.
   for (int i = 0; i < linhaHabilidade; i++) {
     for (int j = 0; j < colunaHabilidade; j++) {
-      if (cone[i][j] == 1) {
-        int linhaAfetada = Linha_cone + i;          // Aplica o deslocamento vertical.
-        int colunaAfetada = Coluna_cone + (j - 2);  // Aplica o deslocamento horizontal.
+      if (i == 1 || j == 2) {                     // Linha central ou coluna central da cruz
+        int linhaAfetada = Linha_cruz + i - 1;    // Ajusta o deslocamento vertical
+        int colunaAfetada = Coluna_cruz + j - 2;  // Ajusta o deslocamento horizontal
 
-        // Aplica diretamente a habilidade no tabuleiro, sem a verificação de limites, pois já foi validado anteriormente.
-        tabuleiro[linhaAfetada][colunaAfetada] = 1;  // Marca a célula do tabuleiro como atingida.
+        tabuleiro[linhaAfetada][colunaAfetada] = 1;  // Marca direto no tabuleiro
       }
     }
   }
 
-  // Preenche a matriz cruz para formar o padrão da cruz
-  for (int i = 0; i < linhaHabilidade; i++) {
-    for (int j = 0; j < colunaHabilidade; j++) {
-      if (i == 1 || j == 2) {  // Linha central e coluna central
-        cruz[i][j] = 1;        // Marca as posições da cruz como 1
-      }
-    }
-  }
-
-  // Aplica a habilidade cruz no tabuleiro.
-  for (int i = 0; i < linhaHabilidade; i++) {
-    for (int j = 0; j < colunaHabilidade; j++) {
-      if (cruz[i][j] == 1) {
-        int linhaAfetada = Linha_cruz + i - 1;    // Ajusta o deslocamento vertical.
-        int colunaAfetada = Coluna_cruz + j - 2;  // Ajusta o deslocamento horizontal.
-
-        tabuleiro[linhaAfetada][colunaAfetada] = 1;  // Marca o tabuleiro com a habilidade.
-      }
-    }
-  }
-
-  // Preenche a matriz octaedro com o formato 3x5 em padrão diamante.
+  // Aplica diretamente o padrão octaedro (formato diamante) no tabuleiro
   for (int i = 0; i < linhaHabilidade; i++) {
     for (int j = 0; j < colunaHabilidade; j++) {
       if ((i == 0 && j == 2) || (i == 1 && (j >= 1 && j <= 3)) || (i == 2 && j == 2)) {
-        octaedro[i][j] = 1;
+        int linhaAfetada = Linha_octaedro + i - 1;    // Ajuste vertical com base no centro
+        int colunaAfetada = Coluna_octaedro + j - 2;  // Ajuste horizontal com base no centro
+
+        tabuleiro[linhaAfetada][colunaAfetada] = 1;  // Marca a célula no tabuleiro
       }
     }
   }
-
-  // Aplica a habilidade octaedro no tabuleiro com base na origem.
-  for (int i = 0; i < linhaHabilidade; i++) {
-    for (int j = 0; j < colunaHabilidade; j++) {
-      if (octaedro[i][j] == 1) {
-        int linhaAfetada = Linha_octaedro + i - 1;    // Ajuste vertical com base no centro.
-        int colunaAfetada = Coluna_octaedro + j - 2;  // Ajuste horizontal com base no centro.
-        tabuleiro[linhaAfetada][colunaAfetada] = 1;   // Marca a célula como atingida.
-      }
-    }
-  }
-
   // Imprime o cabeçalho das colunas (coordenadas X).
   printf("\t");  // Espaço inicial para alinhar com os números das linhas.
   for (int l = 0; l < tamanhoTabuleiro; l++) {
