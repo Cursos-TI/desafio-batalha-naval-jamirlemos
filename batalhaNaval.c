@@ -17,8 +17,9 @@ int main() {
 
   int tabuleiro[10][10] = { 0 };                                                // Inicializa o tabuleiro 10X10 com zeros.
   char coordenadaX[10] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };  // Inicializa as Letras das colunas como coordenada.
-  int cone[linhaHabilidade][colunaHabilidade];                                  // Inicializa a matriz cone
-
+  int cone[linhaHabilidade][colunaHabilidade] = { 0 };                          // Inicializa a matriz cone com zeros.
+  int cruz[linhaHabilidade][colunaHabilidade] = { 0 };                          // Inicializa a matriz cruz com zeros.
+  int octaedro[linhaHabilidade][colunaHabilidade] = { 0 };                      // Inicializa a matriz octaedro com zeros.
 
   int erro = 0;                   // Verificador de erro.
   int sobreposicaoDetectada = 0;  // Verificador de sobreposição.
@@ -30,7 +31,9 @@ int main() {
   int linhaNavioDd = 1, colunaNavioDd = 0;  // Navio Diagonal começa em A2.
 
   // Coordenadas iniciais das habilidades.
-  int origemLinha = tamanhoNavio, origemColuna = 7;  // linha e coluna onde a habilidade cone será aplicada.
+  int Linha_cone = 3, Coluna_cone = 7;          // linha e coluna onde a habilidade cone será aplicada.
+  int Linha_cruz = 6, Coluna_cruz = 2;          // linha e coluna onde a habilidade cruz será aplicada.
+  int Linha_octaedro = 8, Coluna_octaedro = 7;  // linha e coluna onde a habilidade octaedro será aplicada.
 
   // Validação e posicionamento do navio horizontal.
   for (int i = 0; i < tamanhoNavio; i++) {  // Verifica se há espaço para o navio horizontal e se não há sobreposição.
@@ -86,27 +89,37 @@ int main() {
     }
     if (tabuleiro[linhaNavioDd + i][colunaNavioDd + i] > tamanhoNavio) {  // Verifica se a posição já está ocupada por uma parte de um navio.
       printf("Erro: sobreposição detectada no navio diagonal descendo!\n");
-      erro = 1;  //
+      erro = 1;  // erro recebe 1
       break;
     }
     tabuleiro[linhaNavioDd + i][colunaNavioDd + i] += tamanhoNavio;  // Posiciona navio diagonal descendo.
   }
 
-  if (erro) return 0;  // Se houver erro de limites ou sobreposição, encerra o programa.
-
-  // Verifica se a matriz cone cabe no tabuleiro a partir da origem central.
-  if (origemLinha + linhaHabilidade - 1 >= tamanhoTabuleiro || origemColuna - (linhaHabilidade - 1) < 0 || origemColuna + (linhaHabilidade - 1) >= tamanhoTabuleiro) {
+  // Verifica se a matriz cone cabe no tabuleiro a partir da origem.
+  if (Linha_cone + linhaHabilidade - 1 >= tamanhoTabuleiro || Coluna_cone - (linhaHabilidade - 1) < 0 || Coluna_cone + (linhaHabilidade - 1) >= tamanhoTabuleiro) {
     printf("Erro: habilidade cone fora dos limites do tabuleiro!\n");
-    return 0;
+    erro = 1;  // erro recebe 1
   }
+
+  // Validação para verificar se a cruz cabe no tabuleiro a partir da origem.
+  if (Linha_cruz - 1 < 0 || Linha_cruz + 1 >= tamanhoTabuleiro || Coluna_cruz - 2 < 0 || Coluna_cruz + 2 >= tamanhoTabuleiro) {
+    printf("Erro: habilidade cruz fora dos limites do tabuleiro!\n");
+    erro = 1;  // erro recebe 1
+  }
+
+  // Validação para verificar se o octaedro cabe no tabuleiro a partir da origem.
+  if (Linha_octaedro - 1 < 0 || Linha_octaedro + 1 >= tamanhoTabuleiro || Coluna_octaedro - 1 < 0 || Coluna_octaedro + 1 >= tamanhoTabuleiro) {
+    printf("Erro: habilidade octaedro fora dos limites do tabuleiro!\n");
+    erro = 1;
+  }
+
+  if (erro) return 0;  // Se houver erro de limites ou sobreposição, encerra o programa.
 
   // Preenche a matriz cone com base no centro expandindo em forma de cone.
   for (int i = 0; i < linhaHabilidade; i++) {
     for (int j = 0; j < colunaHabilidade; j++) {
       if (j >= 2 - i && j <= 2 + i) {  // Se a posição estiver dentro do alcance lateral do cone.
         cone[i][j] = 1;                // Marca como área atingida pela habilidade.
-      } else {
-        cone[i][j] = 0;  // Fora da área atingida pela habilidade.
       }
     }
   }
@@ -115,11 +128,52 @@ int main() {
   for (int i = 0; i < linhaHabilidade; i++) {
     for (int j = 0; j < colunaHabilidade; j++) {
       if (cone[i][j] == 1) {
-        int linhaAfetada = origemLinha + i;          // Aplica o deslocamento vertical.
-        int colunaAfetada = origemColuna + (j - 2);  // Aplica o deslocamento horizontal.
+        int linhaAfetada = Linha_cone + i;          // Aplica o deslocamento vertical.
+        int colunaAfetada = Coluna_cone + (j - 2);  // Aplica o deslocamento horizontal.
 
         // Aplica diretamente a habilidade no tabuleiro, sem a verificação de limites, pois já foi validado anteriormente.
         tabuleiro[linhaAfetada][colunaAfetada] = 1;  // Marca a célula do tabuleiro como atingida.
+      }
+    }
+  }
+
+  // Preenche a matriz cruz para formar o padrão da cruz
+  for (int i = 0; i < linhaHabilidade; i++) {
+    for (int j = 0; j < colunaHabilidade; j++) {
+      if (i == 1 || j == 2) {  // Linha central e coluna central
+        cruz[i][j] = 1;        // Marca as posições da cruz como 1
+      }
+    }
+  }
+
+  // Aplica a habilidade cruz no tabuleiro.
+  for (int i = 0; i < linhaHabilidade; i++) {
+    for (int j = 0; j < colunaHabilidade; j++) {
+      if (cruz[i][j] == 1) {
+        int linhaAfetada = Linha_cruz + i - 1;    // Ajusta o deslocamento vertical.
+        int colunaAfetada = Coluna_cruz + j - 2;  // Ajusta o deslocamento horizontal.
+
+        tabuleiro[linhaAfetada][colunaAfetada] = 1;  // Marca o tabuleiro com a habilidade.
+      }
+    }
+  }
+
+  // Preenche a matriz octaedro com o formato 3x5 em padrão diamante.
+  for (int i = 0; i < linhaHabilidade; i++) {
+    for (int j = 0; j < colunaHabilidade; j++) {
+      if ((i == 0 && j == 2) || (i == 1 && (j >= 1 && j <= 3)) || (i == 2 && j == 2)) {
+        octaedro[i][j] = 1;
+      }
+    }
+  }
+
+  // Aplica a habilidade octaedro no tabuleiro com base na origem.
+  for (int i = 0; i < linhaHabilidade; i++) {
+    for (int j = 0; j < colunaHabilidade; j++) {
+      if (octaedro[i][j] == 1) {
+        int linhaAfetada = Linha_octaedro + i - 1;    // Ajuste vertical com base no centro.
+        int colunaAfetada = Coluna_octaedro + j - 2;  // Ajuste horizontal com base no centro.
+        tabuleiro[linhaAfetada][colunaAfetada] = 1;   // Marca a célula como atingida.
       }
     }
   }
@@ -129,7 +183,7 @@ int main() {
   for (int l = 0; l < tamanhoTabuleiro; l++) {
     printf("%c\t", coordenadaX[l]);
   }
-  printf("\n\n\n");  // imprime 3 linhas abaixo.
+  printf("\n\n\n");  // imprime tamanhoNavio linhas abaixo.
 
   // Imprime o tabuleiro com os números das linhas (coordenadas Y).
   for (int i = 0; i < tamanhoTabuleiro; i++) {
@@ -137,7 +191,7 @@ int main() {
     for (int j = 0; j < tamanhoTabuleiro; j++) {
       printf("%d\t", tabuleiro[i][j]);  // Imprime o valor da célula.
     }
-    printf("\n\n\n");  // Pula 3 linhas após cada linha do tabuleiro.
+    printf("\n\n\n");  // Pula tamanhoNavio linhas após cada linha do tabuleiro.
   }
 
   // Exemplos de exibição das habilidades:
