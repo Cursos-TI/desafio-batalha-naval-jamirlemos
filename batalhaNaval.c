@@ -32,61 +32,75 @@ int main() {
     // Coordenadas iniciais das habilidades.
     int origemLinha = 3, origemColuna = 7; // linha e coluna onde a habilidade cone será aplicada.
 
-    // Validação do navio horizontal (3 posições dentro do tabuleiro com 10 posições)
-    if (colunaNavioH + tamanhoNavio - 1 >= tamanhoTabuleiro) { // Como o Navio já tem o início de sua posição
-      printf("Erro: navio horizontal fora dos limites do tabuleiro!\n");
-      erro = 1; // variavel erro recebe o valor 1, caso a posição do navio extrapole o tabuleiro
+    // Validação e posicionamento do navio horizontal
+    for (int i = 0; i < tamanhoNavio; i++) { // Verifica se há espaço para o navio horizontal e se não há sobreposição
+        if (colunaNavioH + i >= tamanhoTabuleiro) {
+            printf("Erro: navio horizontal fora dos limites do tabuleiro!\n");
+            erro = 1;
+            break;
+        }
+        if (tabuleiro[linhaNavioH][colunaNavioH + i] != 0) { // Verifica se a posição já está ocupada
+            printf("Erro: sobreposição detectada no navio horizontal!\n");
+            erro = 1;
+            break;
+        }
+        tabuleiro[linhaNavioH][colunaNavioH + i] += 3; // Posiciona navio horizontal
     }
 
-    // Validação do navio vertical (3 posições dentro do tabuleiro com 10 posições)
-    if (linhaNavioV + tamanhoNavio - 1 >= tamanhoTabuleiro) { // Como o Navio já tem o início de sua posição
-      printf("Erro: navio vertical fora dos limites do tabuleiro!\n");
-      erro = 1; // variavel erro recebe o valor 1, caso a posição do navio extrapole o tabuleiro
+    // Validação e posicionamento do navio vertical
+    for (int i = 0; i < tamanhoNavio; i++) { // Verifica se há espaço para o navio vertical e se não há sobreposição
+        if (linhaNavioV + i >= tamanhoTabuleiro) {
+            printf("Erro: navio vertical fora dos limites do tabuleiro!\n");
+            erro = 1;
+            break;
+        }
+        if (tabuleiro[linhaNavioV + i][colunaNavioV] != 0) { // Verifica se a posição já está ocupada
+            printf("Erro: sobreposição detectada no navio vertical!\n");
+            erro = 1;
+            break;
+        }
+        tabuleiro[linhaNavioV + i][colunaNavioV] += 3; // Posiciona navio vertical
     }
 
-    // Validação do navio diagonal (3 posições dentro do tabuleiro com 10 posições)
-    if (linhaNavioDs - (tamanhoNavio - 1) < 0 || colunaNavioDs + tamanhoNavio - 1 >= tamanhoTabuleiro) {
-      printf("Erro: navio diagonal fora dos limites do tabuleiro!\n");
-      erro = 1;
+    // Validação e posicionamento do navio diagonal (subindo)
+    for (int i = 0; i < tamanhoNavio; i++) { // Verifica se há espaço para o navio diagonal subindo
+        if (linhaNavioDs - i < 0 || colunaNavioDs + i >= tamanhoTabuleiro) {
+            printf("Erro: navio diagonal subindo fora dos limites do tabuleiro!\n");
+            erro = 1;
+            break;
+        }
+        if (tabuleiro[linhaNavioDs - i][colunaNavioDs + i] != 0) { // Verifica se a posição já está ocupada
+            printf("Erro: sobreposição detectada no navio diagonal subindo!\n");
+            erro = 1;
+            break;
+        }
+        tabuleiro[linhaNavioDs - i][colunaNavioDs + i] += 3; // Posiciona navio diagonal subindo
     }
 
-    // Validação do navio diagonal (3 posições dentro do tabuleiro com 10 posições)
-    if (linhaNavioDd + tamanhoNavio - 1 >= tamanhoTabuleiro || colunaNavioDd + tamanhoNavio - 1 >= tamanhoTabuleiro) {
-    printf("Erro: navio diagonal fora dos limites do tabuleiro!\n");
-    erro = 1;
+    // Validação e posicionamento do navio diagonal (descendo)
+    for (int i = 0; i < tamanhoNavio; i++) { // Verifica se há espaço para o navio diagonal descendo
+        if (linhaNavioDd + i >= tamanhoTabuleiro || colunaNavioDd + i >= tamanhoTabuleiro) {
+            printf("Erro: navio diagonal descendo fora dos limites do tabuleiro!\n");
+            erro = 1;
+            break;
+        }
+        if (tabuleiro[linhaNavioDd + i][colunaNavioDd + i] != 0) { // Verifica se a posição já está ocupada
+            printf("Erro: sobreposição detectada no navio diagonal descendo!\n");
+            erro = 1;
+            break;
+        }
+        tabuleiro[linhaNavioDd + i][colunaNavioDd + i] += 3; // Posiciona navio diagonal descendo
     }
+
+    if (erro) return 0; // Se houve erro, encerra o programa.
 
     // Verifica se a matriz cone cabe no tabuleiro a partir da origem central
     if (origemLinha + linhaHabilidade - 1 >= tamanhoTabuleiro || origemColuna - (linhaHabilidade - 1) < 0 || origemColuna + (linhaHabilidade - 1) >= tamanhoTabuleiro) {
-    printf("Erro: habilidade cone fora dos limites do tabuleiro!\n");
-    return 0;
+        printf("Erro: habilidade cone fora dos limites do tabuleiro!\n");
+        return 0;
     }
 
-
-    // Se não houver erro, posiciona os navios
-    if (!erro) { // mesma coisa de erro == 0;
-        for (int i = 0; i < tamanhoNavio; i++) { // loop percorrendo o tamanho de um navio
-        tabuleiro[linhaNavioH][colunaNavioH + i] += 3;       // Posiciona navio horizontal
-        tabuleiro[linhaNavioV + i][colunaNavioV] += 3;       // Posiciona navio vertical
-        tabuleiro[linhaNavioDs - i][colunaNavioDs + i] += 3;    // Diagonal subindo a nordeste apartir de B9 até D7.
-        tabuleiro[linhaNavioDd + i][colunaNavioDd + i] += 3;    // Diagonal descendo apartir de F1 até H3.
-        }
-      }
-
-    // Verifica se há sobreposição dos navios
-    for (int i = 0; i < tamanhoTabuleiro; i++) {     // loop para percorrer as linhas (A-J) da matriz do tabuleiro.
-      for (int j = 0; j < tamanhoTabuleiro; j++) {  // loop para percorrer as colunas(1-10) da matriz do tabuleiro.
-        if (tabuleiro[i][j] > tamanhoNavio) {    // condicional para verificar a coordenada é maior que 3.
-          printf("Erro: sobreposição de navios detectada na posição %c%d!\n", coordenadaX[j], i + 1);
-          sobreposicaoDetectada = 1; // Marca que houve sobreposição
-        }
-      }
-    }
-
-    // Se houve sobreposição, encerra o programa
-    if (sobreposicaoDetectada) return 0; // encerra o programa caso haja sobreposição.
-
-      // Preenche a matriz cone com base no centro expandindo em forma de cone.
+    // Preenche a matriz cone com base no centro expandindo em forma de cone.
     for (int i = 0; i < linhaHabilidade; i++) {
         for (int j = 0; j < colunaHabilidade; j++) {
             if (j >= 2 - i && j <= 2 + i) { // Se a posição estiver dentro do alcance lateral do cone.
@@ -98,36 +112,35 @@ int main() {
     }
 
     // Aplica a habilidade cone no tabuleiro com base na origem
-for (int i = 0; i < linhaHabilidade; i++) {
-    for (int j = 0; j < colunaHabilidade; j++) {
-        if (cone[i][j] == 1) {
-            int linhaAfetada = origemLinha + i;
-            int colunaAfetada = origemColuna + (j - 2); // Aplica o deslocamento horizontal
+    for (int i = 0; i < linhaHabilidade; i++) {
+        for (int j = 0; j < colunaHabilidade; j++) {
+            if (cone[i][j] == 1) {
+                int linhaAfetada = origemLinha + i; // Aplica o deslocamento vertical
+                int colunaAfetada = origemColuna + (j - 2); // Aplica o deslocamento horizontal
 
-            // Aplica diretamente a habilidade no tabuleiro, sem a verificação de limites, pois já foi validado anteriormente
-            tabuleiro[linhaAfetada][colunaAfetada] = 1; // Marca a célula do tabuleiro como atingida
+                // Aplica diretamente a habilidade no tabuleiro, sem a verificação de limites, pois já foi validado anteriormente
+                tabuleiro[linhaAfetada][colunaAfetada] = 1; // Marca a célula do tabuleiro como atingida
+            }
         }
     }
-}
 
-      // Imprime o cabeçalho das colunas (coordenadas X)
-      printf("\t");  // Espaço inicial para alinhar com os números das linhas
-      for (int l = 0; l < tamanhoTabuleiro; l++) {
+    // Imprime o cabeçalho das colunas (coordenadas X)
+    printf("\t");  // Espaço inicial para alinhar com os números das linhas
+    for (int l = 0; l < tamanhoTabuleiro; l++) {
         printf("%c\t", coordenadaX[l]);
-      }
-      printf("\n\n\n"); // imprime 3 linhas abaixo
+    }
+    printf("\n\n\n"); // imprime 3 linhas abaixo
 
-      // Imprime o tabuleiro com os números das linhas (coordenadas Y)
-      for (int i = 0; i < tamanhoTabuleiro; i++) {
+    // Imprime o tabuleiro com os números das linhas (coordenadas Y)
+    for (int i = 0; i < tamanhoTabuleiro; i++) {
         printf("%d\t", i + 1);  // Imprime o número da linha (1 a 10)
         for (int j = 0; j < tamanhoTabuleiro; j++) {
-          printf("%d\t", tabuleiro[i][j]);  // Imprime o valor da célula
+            printf("%d\t", tabuleiro[i][j]);  // Imprime o valor da célula
         }
         printf("\n\n\n");  // Pula 3 linhas após cada linha do tabuleiro
-      }
-    
+    }
 
-    // Exemplos de exibição das habilidades:
+ // Exemplos de exibição das habilidades:
     // Exemplo para habilidade em cone:
     // 0 0 1 0 0
     // 0 1 1 1 0
