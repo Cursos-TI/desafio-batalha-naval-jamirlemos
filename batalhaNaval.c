@@ -49,7 +49,7 @@ int main() {
 
       // Se não houver erro, posiciona os navios
       if (!erro) { // mesma coisa de erro == 0;
-        for (int i = 0; i < 3; i++) { // loop percorrendo o tamanho de um navio
+        for (int i = 0; i < tamanhoNavio; i++) { // loop percorrendo o tamanho de um navio
           tabuleiro[linhaNavioH][colunaNavioH + i] += 3;       // Posiciona navio horizontal
           tabuleiro[linhaNavioV + i][colunaNavioV] += 3;       // Posiciona navio vertical
           tabuleiro[linhaNavioDs - i][colunaNavioDs + i] += 3;    // Diagonal subindo a nordeste apartir de B9 até D7.
@@ -58,8 +58,8 @@ int main() {
       }
   
     // Verifica se há sobreposição dos navios
-    for (int i = 0; i < 10; i++) {     // loop para percorrer as linhas (A-J) da matriz do tabuleiro.
-      for (int j = 0; j < 10; j++) {  // loop para percorrer as colunas(1-10) da matriz do tabuleiro.
+    for (int i = 0; i < tamanhoTabuleiro; i++) {     // loop para percorrer as linhas (A-J) da matriz do tabuleiro.
+      for (int j = 0; j < tamanhoTabuleiro; j++) {  // loop para percorrer as colunas(1-10) da matriz do tabuleiro.
         if (tabuleiro[i][j] > 3) {    // condicional para verificar a coordenada é maior que 3.
           printf("Erro: sobreposição de navios detectada na posição %c%d!\n", coordenadaX[j], i + 1);
           sobreposicaoDetectada = 1; // Marca que houve sobreposição
@@ -74,15 +74,15 @@ int main() {
 
       // Imprime o cabeçalho das colunas (coordenadas X)
       printf("\t");  // Espaço inicial para alinhar com os números das linhas
-      for (int l = 0; l < 10; l++) {
+      for (int l = 0; l < tamanhoTabuleiro; l++) {
         printf("%c\t", coordenadaX[l]);
       }
       printf("\n\n\n"); // imprime 3 linhas abaixo
   
       // Imprime o tabuleiro com os números das linhas (coordenadas Y)
-      for (int i = 0; i < 10; i++) {
+      for (int i = 0; i < tamanhoTabuleiro; i++) {
         printf("%d\t", i + 1);  // Imprime o número da linha (1 a 10)
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < tamanhoTabuleiro; j++) {
           printf("%d\t", tabuleiro[i][j]);  // Imprime o valor da célula
         }
         printf("\n\n\n");  // Pula 3 linhas após cada linha do tabuleiro
