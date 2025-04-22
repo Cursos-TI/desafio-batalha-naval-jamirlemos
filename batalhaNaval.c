@@ -43,7 +43,7 @@ int main() {
       for (int j = 0; j < 10; j++) {  // loop para percorrer as colunas(1-10) da matriz do tabuleiro.
         if (tabuleiro[i][j] > 3) {    // condicional para verificar a coordenada é maior que 3.
           printf("Erro: sobreposição de navios detectada na posição %c%d!\n", coordenadaX[j], i + 1);
-          erro = 1;
+          return 0; // encerra o programa caso haja sobreposição
         }
       }
     }
