@@ -39,12 +39,12 @@ int main() {
   for (int i = 0; i < tamanhoNavio; i++) {  // Verifica se há espaço para o navio horizontal e se não há sobreposição.
     if (colunaNavioH + i >= tamanhoTabuleiro) {
       printf("Erro: navio horizontal fora dos limites do tabuleiro!\n");
-      erro = 1;
+      erro = 1; // erro recebe 1
       break;
     }
     if (tabuleiro[linhaNavioH][colunaNavioH + i] > tamanhoNavio) {  // Verifica se a posição já está ocupada por uma parte de um navio.
       printf("Erro: sobreposição detectada no navio horizontal!\n");
-      erro = 1;
+      erro = 1; // erro recebe 1
       break;
     }
     tabuleiro[linhaNavioH][colunaNavioH + i] += tamanhoNavio;  // Posiciona navio horizontal.
@@ -54,12 +54,12 @@ int main() {
   for (int i = 0; i < tamanhoNavio; i++) {  // Verifica se há espaço para o navio vertical e se não há sobreposição.
     if (linhaNavioV + i >= tamanhoTabuleiro) {
       printf("Erro: navio vertical fora dos limites do tabuleiro!\n");
-      erro = 1;
+      erro = 1; // erro recebe 1
       break;
     }
     if (tabuleiro[linhaNavioV + i][colunaNavioV] > tamanhoNavio) {  // Verifica se a posição já está ocupada por uma parte de um navio.
       printf("Erro: sobreposição detectada no navio vertical!\n");
-      erro = 1;
+      erro = 1; // erro recebe 1
       break;
     }
     tabuleiro[linhaNavioV + i][colunaNavioV] += tamanhoNavio;  // Posiciona navio vertical.
@@ -69,12 +69,12 @@ int main() {
   for (int i = 0; i < tamanhoNavio; i++) {  // Verifica se há espaço para o navio diagonal subindo.
     if (linhaNavioDs - i < 0 || colunaNavioDs + i >= tamanhoTabuleiro) {
       printf("Erro: navio diagonal subindo fora dos limites do tabuleiro!\n");
-      erro = 1;
+      erro = 1; // erro recebe 1
       break;
     }
     if (tabuleiro[linhaNavioDs - i][colunaNavioDs + i] > tamanhoNavio) {  // Verifica se a posição já está ocupada por uma parte de um navio.
       printf("Erro: sobreposição detectada no navio diagonal subindo!\n");
-      erro = 1;
+      erro = 1; // erro recebe 1
       break;
     }
     tabuleiro[linhaNavioDs - i][colunaNavioDs + i] += tamanhoNavio;  // Posiciona navio diagonal subindo.
@@ -84,33 +84,33 @@ int main() {
   for (int i = 0; i < tamanhoNavio; i++) {  // Verifica se há espaço para o navio diagonal descendo.
     if (linhaNavioDd + i >= tamanhoTabuleiro || colunaNavioDd + i >= tamanhoTabuleiro) {
       printf("Erro: navio diagonal descendo fora dos limites do tabuleiro!\n");
-      erro = 1;
+      erro = 1; // erro recebe 1
       break;
     }
     if (tabuleiro[linhaNavioDd + i][colunaNavioDd + i] > tamanhoNavio) {  // Verifica se a posição já está ocupada por uma parte de um navio.
       printf("Erro: sobreposição detectada no navio diagonal descendo!\n");
-      erro = 1;  // erro recebe 1
+      erro = 1; // erro recebe 1
       break;
     }
     tabuleiro[linhaNavioDd + i][colunaNavioDd + i] += tamanhoNavio;  // Posiciona navio diagonal descendo.
   }
 
-  // Verifica se a matriz cone cabe no tabuleiro a partir da origem.
+  // Verifica se a matriz cone está nos limites do tabuleiro a partir da origem.
   if (Linha_cone + linhaHabilidade - 1 >= tamanhoTabuleiro || Coluna_cone - (linhaHabilidade - 1) < 0 || Coluna_cone + (linhaHabilidade - 1) >= tamanhoTabuleiro) {
     printf("Erro: habilidade cone fora dos limites do tabuleiro!\n");
-    erro = 1;  // erro recebe 1
+    erro = 1;   // erro recebe 1
   }
 
-  // Validação para verificar se a cruz cabe no tabuleiro a partir da origem.
+  // Verificar se a matriz cruz está nos limites do tabuleiro a partir da origem.
   if (Linha_cruz - 1 < 0 || Linha_cruz + 1 >= tamanhoTabuleiro || Coluna_cruz - 2 < 0 || Coluna_cruz + 2 >= tamanhoTabuleiro) {
     printf("Erro: habilidade cruz fora dos limites do tabuleiro!\n");
-    erro = 1;  // erro recebe 1
+    erro = 1;   // erro recebe 1
   }
 
-  // Validação para verificar se o octaedro cabe no tabuleiro a partir da origem.
+  // Verificar se a matriz octaedro está nos limites do tabuleiro a partir da origem.
   if (Linha_octaedro - 1 < 0 || Linha_octaedro + 1 >= tamanhoTabuleiro || Coluna_octaedro - 1 < 0 || Coluna_octaedro + 1 >= tamanhoTabuleiro) {
     printf("Erro: habilidade octaedro fora dos limites do tabuleiro!\n");
-    erro = 1;
+    erro = 1;   // erro recebe 1
   }
 
   if (erro) return 0;  // Se houver erro de limites ou sobreposição, encerra o programa.
