@@ -12,7 +12,7 @@ int main() {
 
     int tabuleiro[10][10] = { 0 };                                                // Inicializa o tabuleiro 10X10 com zeros
     char coordenadaX[10] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };  // Inicializa as Letras das colunas como coordenada
-    int erro = 0;
+    int erro = 0; // Verificador de erro.
   
     // Coordenadas iniciais dos navios
     int linhaNavioH = 2, colunaNavioH = 3;  // Navio horizontal começa em D3
