@@ -19,30 +19,32 @@ int main() {
     int linhaNavioV = 5, colunaNavioV = 7;  // Navio vertical começa em H6
   
     // Validação do navio horizontal (3 posições dentro do tabuleiro com 10 posições)
-    if (colunaNavioH + 2 > 10) {
+    if (colunaNavioH + 2 >= 10) { // Como o Navio já tem o início de sua posição
       printf("Erro: navio horizontal fora dos limites do tabuleiro!\n");
       erro = 1; // variavel erro recebe o valor 1, caso a posição do navio extrapole o tabuleiro
     }
   
     // Validação do navio vertical (3 posições dentro do tabuleiro com 10 posições)
-    if (linhaNavioV + 2 > 10) {
+    if (linhaNavioV + 2 >= 10) { // Como o Navio já tem o início de sua posição
       printf("Erro: navio vertical fora dos limites do tabuleiro!\n");
       erro = 1; // variavel erro recebe o valor 1, caso a posição do navio extrapole o tabuleiro
     }
   
       // Se não houver erro, posiciona os navios
       if (!erro) { // mesma coisa de erro == 0;
-          for (int i = 0; i < 3; i++) {
-          tabuleiro[linhaNavioH][colunaNavioH + i] = 3;       // Posiciona navio horizontal
-          tabuleiro[linhaNavioV + i][colunaNavioV] = 3;       // Posiciona navio vertical
+        for (int i = 0; i < 3; i++) { // loop percorrendo o tamanho de um navio
+          tabuleiro[linhaNavioH][colunaNavioH + i] += 3;       // Posiciona navio horizontal
+          tabuleiro[linhaNavioV + i][colunaNavioV] += 3;       // Posiciona navio vertical
           }
       }
   
     // Verifica se há sobreposição dos navios
-    for (int i = 0; i < 3; i++) {
-      if (tabuleiro[linhaNavioH][colunaNavioH + i] == 3 || tabuleiro[linhaNavioV + i][colunaNavioV] == 3) {
-        printf("Erro: sobreposição de navios detectada!\n");
-        erro = 1;
+    for (int i = 0; i < 10; i++) {     // loop para percorrer as linhas (A-J) da matriz do tabuleiro.
+      for (int j = 0; j < 10; j++) {  // loop para percorrer as colunas(1-10) da matriz do tabuleiro.
+        if (tabuleiro[i][j] > 3) {    // condicional para verificar a coordenada é maior que 3.
+          printf("Erro: sobreposição de navios detectada na posição %c%d!\n", coordenadaX[j], i + 1);
+          erro = 1;
+        }
       }
     }
 
@@ -51,7 +53,7 @@ int main() {
       for (int l = 0; l < 10; l++) {
         printf("%c\t", coordenadaX[l]);
       }
-      printf("\n\n\n");
+      printf("\n\n\n"); // imprime 3 linhas abaixo
   
       // Imprime o tabuleiro com os números das linhas (coordenadas Y)
       for (int i = 0; i < 10; i++) {
@@ -59,7 +61,7 @@ int main() {
         for (int j = 0; j < 10; j++) {
           printf("%d\t", tabuleiro[i][j]);  // Imprime o valor da célula
         }
-        printf("\n\n\n");  // Pula linha após cada linha do tabuleiro
+        printf("\n\n\n");  // Pula 3 linhas após cada linha do tabuleiro
       }
     
     // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
